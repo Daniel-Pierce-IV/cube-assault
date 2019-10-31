@@ -7,8 +7,9 @@ namespace Cube.Control
 {
 	public class FirstPersonAiming : MonoBehaviour
 	{
-		[SerializeField] private Camera camera;
-		[SerializeField] private float sensitivity = 200f;
+		[SerializeField] private float lookSensitivity = 200f;
+
+		private Camera childCamera;
 
 		private float curPitch = 0f;
 		private float maxPitch = 90f; // Straight down
@@ -16,6 +17,11 @@ namespace Cube.Control
 
 		private const float UP_ROTATION_ANGLE = 270f;
 		private const float DOWN_ROTATION_ANGLE = 90f;
+
+		private void Start()
+		{
+			childCamera = GetComponentInChildren<Camera>();
+		}
 
 		public void LockCursor()
 		{
@@ -30,14 +36,14 @@ namespace Cube.Control
 
 		private void UpdateYaw(float mouseInputX)
 		{
-			float yaw = mouseInputX * sensitivity * Time.deltaTime;
+			float yaw = mouseInputX * lookSensitivity * Time.deltaTime;
 			transform.Rotate(0, yaw, 0);
 		}
 
 		private void UpdatePitch(float mouseInputY)
 		{
 			// Invert mouse y for intuitive mouse aiming
-			float pitch = -mouseInputY * sensitivity * Time.deltaTime;
+			float pitch = -mouseInputY * lookSensitivity * Time.deltaTime;
 			curPitch += pitch;
 
 			// Custom clamp for Unity rotation angles
@@ -56,15 +62,15 @@ namespace Cube.Control
 			}
 			else
 			{
-				camera.transform.Rotate(pitch, 0, 0);
+				childCamera.transform.Rotate(pitch, 0, 0);
 			}
 		}
 
 		private void SetCameraEulerPitch(float clampAngle)
 		{
-			Vector3 eulerRotation = camera.transform.eulerAngles;
+			Vector3 eulerRotation = childCamera.transform.eulerAngles;
 			eulerRotation.x = clampAngle;
-			camera.transform.eulerAngles = eulerRotation;
+			childCamera.transform.eulerAngles = eulerRotation;
 		}
 	}
 }

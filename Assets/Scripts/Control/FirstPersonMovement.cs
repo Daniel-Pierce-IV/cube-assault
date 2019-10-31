@@ -4,32 +4,26 @@ using UnityEngine;
 
 namespace Cube.Control
 {
-	[RequireComponent(typeof(Rigidbody))]
-	[RequireComponent(typeof(CapsuleCollider))]
+	[RequireComponent(typeof(CharacterController))]
 	public class FirstPersonMovement : MonoBehaviour
 	{
 		[SerializeField] private float speed = 5f;
-		private Rigidbody rigidbody;
+		private CharacterController characterController;
 
 		// Start is called before the first frame update
 		void Start()
 		{
-			rigidbody = GetComponent<Rigidbody>();
+			characterController = GetComponent<CharacterController>();
 		}
 
 		public void HandleInput(Vector3 movementInput)
 		{
-			// Using velocity instead of AddForce()
-			// for its instant start/stop without acceleration
-			rigidbody.velocity = CalculateNewRigidbodyVelocity(movementInput);
-		}
+			// Multiplying by the tranform's directions keeps its
+			// orientation matched to the camera's perspective
+			Vector3 moveForward = transform.forward * movementInput.z * speed;
+			Vector3 moveRight = transform.right * movementInput.x * speed;
 
-		private Vector3 CalculateNewRigidbodyVelocity(Vector3 movementInput)
-		{
-			Vector3 velocity = movementInput * speed;
-			velocity.y = rigidbody.velocity.y;
-
-			return velocity;
+			characterController.SimpleMove(moveForward + moveRight);
 		}
 	}
 }
