@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cube.Controller
+namespace PlayerController
 {
-	public class FirstPersonWeaponSystem : MonoBehaviour
+	public class WeaponSystem : MonoBehaviour
 	{
 		[SerializeField] private Weapon primaryWeapon;
 		[SerializeField] private Weapon secondaryWeapon;
@@ -34,4 +34,3 @@ namespace Cube.Controller
 		}
 	}
 }
-
