@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Spawn Area
+  - Hit Box
+  - Enemy Hit Box
   layers:
   - Default
   - TransparentFX
@@ -15,9 +18,9 @@ TagManager:
   - 
   - Player Collider
   - Enemy Space Collider
-  - 
-  - 
-  - 
+  - Player Boundary
+  - Hit Box Barrier
+  - Hit Box
   - 
   - 
   - 
