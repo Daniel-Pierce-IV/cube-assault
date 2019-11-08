@@ -129,10 +129,4 @@ public class SpawnerAI : MonoBehaviour
 		_isFullyAwake = true;
 		GetComponent<Animator>().SetTrigger("hasAwoken");
 	}
-
-	private void OnParticleCollision(GameObject other)
-	{
-		print(LayerMask.LayerToName(other.layer));
-		//other.layer == LayerMask.NameToLayer("Hit")
-	}
 }
