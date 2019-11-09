@@ -18,7 +18,7 @@ namespace PlayerController
 			{
 				primaryWeapon.Activate();
 			}
-			else if(Input.GetKeyUp(primaryKey))
+			else if (Input.GetKeyUp(primaryKey))
 			{
 				primaryWeapon.Deactivate();
 			}

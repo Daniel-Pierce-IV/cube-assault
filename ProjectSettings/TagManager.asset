@@ -7,6 +7,7 @@ TagManager:
   - Spawn Area
   - Hit Box
   - Enemy Hit Box
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Player Boundary
   - Hit Box Barrier
   - Hit Box
-  - 
+  - Bullet
   - 
   - 
   - 

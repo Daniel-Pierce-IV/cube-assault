@@ -13,7 +13,7 @@ namespace AIController
 	 */
 
 	[RequireComponent(typeof(Rigidbody))]
-	public class SeekerAI : MonoBehaviour
+	public class SeekerAI : MonoBehaviour, IKillable
 	{
 		[SerializeField] private float forwardSpeed = 10f;
 		[SerializeField] private float verticalSpeed = 3f;
@@ -160,6 +160,16 @@ namespace AIController
 			targetPosition.y = transform.position.y;
 
 			return targetPosition - transform.position;
+		}
+
+		public void TakeDamage()
+		{
+			Die();
+		}
+
+		public void Die()
+		{
+			Destroy(gameObject);
 		}
 	}
 }

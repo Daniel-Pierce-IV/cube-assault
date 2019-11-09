@@ -15,7 +15,7 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpawnerAI : MonoBehaviour
+public class SpawnerAI : MonoBehaviour, IKillable
 {
 	[Tooltip("How far forward to move from the wall before moving to the spawn area.")]
 	[SerializeField] private float awakenDistance = 6f;
@@ -128,5 +128,15 @@ public class SpawnerAI : MonoBehaviour
 	{
 		_isFullyAwake = true;
 		GetComponent<Animator>().SetTrigger("hasAwoken");
+	}
+
+	public void TakeDamage()
+	{
+		Die();
+	}
+
+	public void Die()
+	{
+		Destroy(gameObject);
 	}
 }
