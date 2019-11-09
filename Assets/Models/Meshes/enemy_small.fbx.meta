@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e3cb86b281333694c8c8293c92835957
+guid: 2da74a2b970b33c40abe5971aed12efa
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: enemy-black
-    second: {fileID: 2100000, guid: 6d374cbd30207444fb36bfbdce5bbc5f, type: 2}
+    second: {fileID: 2100000, guid: a48b171e26bdd7a4f9a1d4e6fcc538fe, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: enemy-emission
-    second: {fileID: 2100000, guid: 0ea408afc1541884f86e6ae52af81a8d, type: 2}
+    second: {fileID: 2100000, guid: e91df05a70e04ee4ea21364f90c93615, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
