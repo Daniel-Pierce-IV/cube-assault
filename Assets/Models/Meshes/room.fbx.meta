@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0946142ec4f735e40b0dd01b8dbfe66c
+guid: 01a6080c741ef584ab190c18770515f1
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
@@ -8,12 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: wall-material
-    second: {fileID: 2100000, guid: 9a0097341568dc147853a6162734b985, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: wall-color
-    second: {fileID: 2800000, guid: 219902bac6bd70b458a8804a087039a3, type: 3}
+    second: {fileID: 2100000, guid: e5eb2b1dc51fbb8409656b038bf72c3b, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
