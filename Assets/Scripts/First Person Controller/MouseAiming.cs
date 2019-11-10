@@ -22,9 +22,16 @@ namespace PlayerController
 
 		private void Update()
 		{
-			UpdateMouseDeltas();
-			ClampMousePitchDelta();
-			RotatePitchAndYaw();
+			if (GetComponent<Health>().IsAlive())
+			{
+				UpdateMouseDeltas();
+				ClampMousePitchDelta();
+				RotatePitchAndYaw();
+			}
+			else if(Cursor.lockState == CursorLockMode.Locked)
+			{
+				Cursor.lockState = CursorLockMode.None;
+			}
 		}
 
 		private void UpdateMouseDeltas()

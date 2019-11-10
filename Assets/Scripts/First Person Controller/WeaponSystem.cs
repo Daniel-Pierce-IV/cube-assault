@@ -14,6 +14,8 @@ namespace PlayerController
 		// Update is called once per frame
 		void Update()
 		{
+			if (!GetComponent<Health>().IsAlive()) return;
+
 			if (Input.GetKey(primaryKey) && !secondaryWeapon.IsActive())
 			{
 				primaryWeapon.Activate();
