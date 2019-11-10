@@ -13,7 +13,7 @@ namespace AIController
 	 */
 
 	[RequireComponent(typeof(Rigidbody))]
-	public class SeekerAI : MonoBehaviour, IKillable
+	public class SeekerAI : MonoBehaviour, IDamageable
 	{
 		[SerializeField] private float forwardSpeed = 10f;
 		[SerializeField] private float verticalSpeed = 3f;
@@ -164,12 +164,16 @@ namespace AIController
 
 		public void TakeDamage()
 		{
-			Die();
+			Destroy(gameObject);
 		}
 
-		public void Die()
+		private void OnCollisionEnter(Collision collision)
 		{
-			Destroy(gameObject);
+			if (collision.gameObject.layer
+				== LayerMask.NameToLayer("Player Collider"))
+			{
+				collision.gameObject.GetComponent<Health>().TakeDamage();
+			}
 		}
 	}
 }

@@ -15,7 +15,7 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpawnerAI : MonoBehaviour, IKillable
+public class SpawnerAI : MonoBehaviour, IDamageable
 {
 	[Tooltip("How far forward to move from the wall before moving to the spawn area.")]
 	[SerializeField] private float awakenDistance = 6f;
@@ -131,11 +131,6 @@ public class SpawnerAI : MonoBehaviour, IKillable
 	}
 
 	public void TakeDamage()
-	{
-		Die();
-	}
-
-	public void Die()
 	{
 		Destroy(gameObject);
 	}

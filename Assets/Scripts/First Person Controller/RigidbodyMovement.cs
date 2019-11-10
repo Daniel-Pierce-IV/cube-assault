@@ -19,12 +19,24 @@ namespace PlayerController
 
 		private void Update()
 		{
-			Vector3 direction = transform.forward * Input.GetAxisRaw("Vertical");
-			direction += transform.right * Input.GetAxisRaw("Horizontal");
+			if (GetComponent<Health>().IsAlive())
+			{
+				Vector3 direction = transform.forward * Input.GetAxisRaw("Vertical");
+				direction += transform.right * Input.GetAxisRaw("Horizontal");
 
-			// Changing velocity has no effect on the rigidbody or
-			// gameobject transform until the next FixedUpdate() is called
-			_rigidbody.velocity = direction * speed;
+				// Changing velocity has no effect on the rigidbody or
+				// gameobject transform until the next FixedUpdate() is called
+				_rigidbody.velocity = direction * speed;
+			}
+			else
+			{
+				// Deactivate
+				_rigidbody.velocity = Vector3.zero;
+				this.enabled = false;
+
+				// Keep player from moving due to enemy collisions
+				GetComponent<CapsuleCollider>().enabled = false;
+			}
 		}
 	}
 }

@@ -8,7 +8,7 @@ public class BulletCollisionHandler : MonoBehaviour
 	{
 		if (other.gameObject.layer == LayerMask.NameToLayer("Hit Box"))
 		{
-			other.GetComponentInParent<IKillable>().TakeDamage();
+			other.GetComponentInParent<IDamageable>().TakeDamage();
 			Destroy(gameObject);
 		}
 	}
