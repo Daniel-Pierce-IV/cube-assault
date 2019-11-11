@@ -52,16 +52,18 @@ public class SpawnerAI : MonoBehaviour, IDamageable
     {
 		if (_isFullyAwake)
 		{
-			if (_isInSpawnArea)
-			{
-				if (_canSpawn)
-				{
-					StartCoroutine(SpawnBehavior());
-				}
-			}
-			else
+			// Always try to be in the spawn area
+			if (!_isInSpawnArea)
 			{
 				MoveToSpawnArea();
+			}
+
+			// NOTE: Spawners can spawn enemies outside of
+			// the spawn area, to prevent layers killing them before
+			// they get at least one wave out
+			if (_canSpawn)
+			{
+				StartCoroutine(SpawnBehavior());
 			}
 		}
 	}
