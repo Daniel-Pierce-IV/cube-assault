@@ -10,6 +10,8 @@ TagManager:
   - Bullet
   - Spawn Point
   - Progression
+  - Spawner
+  - Seeker
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - Hit Box Barrier
   - Hit Box
   - Bullet
-  - 
+  - Bullet Deactivator
   - 
   - 
   - 

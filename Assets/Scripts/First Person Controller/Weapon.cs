@@ -50,32 +50,34 @@ namespace PlayerController
 
 				for (int i = 0; i < numBullets; i++)
 				{
-					CreateBullet();
+					InitializeBullet();
 				}
 
 				StartCoroutine(Cooldown());
 			}
 		}
 
-		private void CreateBullet()
+		private void InitializeBullet()
 		{
-			GameObject bulletInstance = Instantiate(
-				bulletPrefab,
-				spawnZone.transform.position,
-				spawnZone.transform.rotation);
+			Bullet bullet = ObjectPoolManager.instance
+				.GetObjectPoolByTag(bulletPrefab.tag)
+				.GetOrCreate()
+				.GetComponent<Bullet>();
 
+			bullet.transform.position = spawnZone.transform.position;
+			bullet.transform.rotation = spawnZone.transform.rotation;
+
+			// Locally move the bullet to a random point in the spawn zone
 			Vector3 spawnPoint = GetRandomLocalPointInZone();
+			bullet.transform.Translate(spawnPoint);
 
-			// Move the bullet to a random point in the spawn zone
-			bulletInstance.transform.Translate(spawnPoint);
-
-			// Rotate the bullet left/right depending on
-			// the distance it is from the center of the spawn zone
-			Vector3 bulletDir = bulletInstance.transform.position - transform.position;
+			// Rotate bullet based on angle from center of spawn zone
+			Vector3 bulletDir = bullet.transform.position - transform.position;
 			float angle = Vector3.Angle(bulletDir, transform.forward) * bulletSpreadIntensity;
-			bulletInstance.transform.Rotate(Vector3.up * Mathf.Sign(spawnPoint.x) * angle);
+			bullet.transform.Rotate(Vector3.up * Mathf.Sign(spawnPoint.x) * angle);
 
-			bulletInstance.GetComponent<Bullet>().SetSpeed(bulletSpeed);
+			bullet.SetSpeed(bulletSpeed);
+			bullet.Activate();
 		}
 
 		private Vector3 GetRandomLocalPointInZone()

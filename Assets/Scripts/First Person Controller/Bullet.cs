@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IPoolable
 {
 	private Rigidbody _rigidbody;
 	private float _initialSpeed;
@@ -24,7 +24,15 @@ public class Bullet : MonoBehaviour
 		if (other.gameObject.layer == LayerMask.NameToLayer("Hit Box"))
 		{
 			other.GetComponentInParent<IDamageable>().TakeDamage();
-			Destroy(gameObject);
+			Deactivate();
+		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject.layer == LayerMask.NameToLayer("Bullet Deactivator"))
+		{
+			Deactivate();
 		}
 	}
 
@@ -32,5 +40,15 @@ public class Bullet : MonoBehaviour
 	{
 		_initialSpeed = speed;
 		GetComponent<Rigidbody>().velocity = transform.forward * _initialSpeed;
+	}
+
+	public void Activate()
+	{
+		gameObject.SetActive(true);
+	}
+
+	public void Deactivate()
+	{
+		gameObject.SetActive(false);
 	}
 }

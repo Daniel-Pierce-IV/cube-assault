@@ -36,11 +36,13 @@ public class SpawnManager : MonoBehaviour
 		_canSpawn = false;
 
 		GameObject spawnPoint = GetRandomSpawnPoint();
+		GameObject spawner = ObjectPoolManager.instance
+			.GetObjectPoolByTag(enemyPrefab.tag)
+			.GetOrCreate();
 
-		Instantiate(
-			enemyPrefab,
-			spawnPoint.transform.position,
-			spawnPoint.transform.rotation);
+		spawner.transform.position = spawnPoint.transform.position;
+		spawner.transform.rotation = spawnPoint.transform.rotation;
+		spawner.GetComponent<IPoolable>().Activate();
 
 		yield return new WaitForSeconds(
 			Progression.Instance().CurrentValue(
