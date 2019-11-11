@@ -11,4 +11,13 @@ public class Progression : MonoBehaviour
 	{
 		return Mathf.Clamp01(Time.timeSinceLevelLoad / duration);
 	}
+
+	// Returns the current value, based on the percentage of progression
+	// between the initial and final values
+	public int CurrentValue(int initialValue, int finalValue)
+	{
+		int difference = finalValue - initialValue;
+		int toAdd = Mathf.RoundToInt(difference * Percent());
+		return initialValue + toAdd;
+	}
 }

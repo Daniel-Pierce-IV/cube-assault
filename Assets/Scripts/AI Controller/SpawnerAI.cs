@@ -152,9 +152,8 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 
 	public void Progress()
 	{
-		// Update how many waves per spawn
-		int difference = finalWavesPerSpawn - initialWavesPerSpawn;
-		int toAdd = Mathf.RoundToInt(difference * _progression.Percent());
-		_currentWavesPerSpawn = initialWavesPerSpawn + toAdd;
+		_currentWavesPerSpawn = _progression.CurrentValue(
+			initialWavesPerSpawn,
+			finalWavesPerSpawn);
 	}
 }
