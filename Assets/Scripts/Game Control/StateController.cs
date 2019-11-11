@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StateController : MonoBehaviour
 {
-	private static GameState _gameState = GameState.Active;
+	private GameState _gameState = GameState.Active;
 
     public GameState GetGameState()
 	{

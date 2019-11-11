@@ -9,6 +9,7 @@ TagManager:
   - Enemy Hit Box
   - Bullet
   - Spawn Point
+  - Progression
   layers:
   - Default
   - TransparentFX

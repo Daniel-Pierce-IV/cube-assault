@@ -32,6 +32,9 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 	[Tooltip("Maximum time to wait after spawning to spawn again.")]
 	[SerializeField] private float maxSpawnCooldown = 35f;
 
+	[SerializeField] private int initialWavesPerSpawn = 1;
+	[SerializeField] private int finalWavesPerSpawn = 3;
+
 	[SerializeField] private GameObject enemyToSpawnPrefab;
 	[SerializeField] private Transform[] spawnPoints = new Transform[3];
 
@@ -77,7 +80,11 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 	{
 		_canSpawn = false;
 
-		for (int i = 0; i < numberOfWaves; i++)
+		int _curWaves = Progression.Instance().CurrentValue(
+			initialWavesPerSpawn,
+			finalWavesPerSpawn);
+
+		for (int i = 0; i < _curWaves; i++)
 		{
 			CreateEnemies();
 
