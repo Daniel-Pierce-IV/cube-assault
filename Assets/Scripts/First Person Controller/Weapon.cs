@@ -6,11 +6,14 @@ namespace PlayerController
 {
 	public class Weapon : MonoBehaviour
 	{
-		[SerializeField] private float fireRate = 0.5f;
+		[SerializeField] private float initialFireRate = 0.5f;
+		[SerializeField] private float finalFireRate = 0.5f;
+
 		[SerializeField] private float bulletSpeed = 50f;
 
 		[Tooltip("Number of bullets shot per trigger pull.")]
-		[SerializeField] private int bulletCount = 1;
+		[SerializeField] private int initialBulletCount = 1;
+		[SerializeField] private int finalBulletCount = 1;
 
 		[Range(0f, 1f)]
 		[SerializeField] private float bulletSpreadIntensity = 0f;
@@ -41,10 +44,15 @@ namespace PlayerController
 		{
 			if (!_isOnCooldown)
 			{
-				for (int i = 0; i < bulletCount; i++)
+				int numBullets = Progression.Instance().CurrentValue(
+					initialBulletCount,
+					finalBulletCount);
+
+				for (int i = 0; i < numBullets; i++)
 				{
 					CreateBullet();
 				}
+
 				StartCoroutine(Cooldown());
 			}
 		}
@@ -86,7 +94,12 @@ namespace PlayerController
 		IEnumerator Cooldown()
 		{
 			_isOnCooldown = true;
-			yield return new WaitForSeconds(fireRate);
+
+			yield return new WaitForSeconds(
+				Progression.Instance().CurrentValue(
+					initialFireRate,
+					finalFireRate));
+
 			_isOnCooldown = false;
 		}
 	}

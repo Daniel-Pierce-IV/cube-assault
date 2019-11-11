@@ -21,6 +21,13 @@ public class Progression : MonoBehaviour
 		return initialValue + toAdd;
 	}
 
+	public float CurrentValue(float initialValue, float finalValue)
+	{
+		float difference = finalValue - initialValue;
+		float toAdd = difference * Percent();
+		return initialValue + toAdd;
+	}
+
 	public static Progression Instance()
 	{
 		return GameObject
