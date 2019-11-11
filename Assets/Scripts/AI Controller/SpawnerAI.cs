@@ -15,7 +15,7 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpawnerAI : MonoBehaviour, IDamageable
+public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 {
 	[Tooltip("How far forward to move from the wall before moving to the spawn area.")]
 	[SerializeField] private float awakenDistance = 6f;
@@ -32,6 +32,10 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 	[Tooltip("Maximum time to wait after spawning to spawn again.")]
 	[SerializeField] private float maxSpawnCooldown = 35f;
 
+	[SerializeField] private int initialWavesPerSpawn = 1;
+	[SerializeField] private int finalWavesPerSpawn = 3;
+	private int _currentWavesPerSpawn = 1;
+
 	[SerializeField] private GameObject enemyToSpawnPrefab;
 	[SerializeField] private Transform[] spawnPoints = new Transform[3];
 
@@ -42,6 +46,7 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 	private bool _canSpawn = true;
 
 	private StateController _stateController;
+	private Progression _progression;
 
 	void Start()
 	{
@@ -49,11 +54,14 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 		_destinationPoint = GameObject.FindGameObjectWithTag("Spawn Area").transform.position;
 		_rigidbody.velocity = transform.forward * (awakenDistance / awakenDuration);
 		_stateController = GameObject.FindObjectOfType<StateController>();
+		_progression = GameObject.FindObjectOfType<Progression>();
 	}
 
 	void Update()
     {
 		if (_stateController.GetGameState() == StateController.GameState.Stopped) return;
+
+		Progress();
 
 		if (_isFullyAwake)
 		{
@@ -68,7 +76,7 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 			// they get at least one wave out
 			if (_canSpawn)
 			{
-				StartCoroutine(SpawnBehavior());
+				StartCoroutine(SpawnBehavior(_currentWavesPerSpawn));
 			}
 		}
 	}
@@ -140,5 +148,13 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 	public void TakeDamage()
 	{
 		Destroy(gameObject);
+	}
+
+	public void Progress()
+	{
+		// Update how many waves per spawn
+		int difference = finalWavesPerSpawn - initialWavesPerSpawn;
+		int toAdd = Mathf.RoundToInt(difference * _progression.Percent());
+		_currentWavesPerSpawn = initialWavesPerSpawn + toAdd;
 	}
 }
