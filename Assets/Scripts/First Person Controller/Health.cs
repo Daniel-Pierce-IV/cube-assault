@@ -17,5 +17,8 @@ public class Health : MonoBehaviour, IDamageable
 		{
 			_isAlive = false;
 		}
+
+		GameObject.FindObjectOfType<StateController>().SetGameState(
+			StateController.GameState.Stopped);
 	}
 }

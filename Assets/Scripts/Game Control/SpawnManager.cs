@@ -9,16 +9,20 @@ public class SpawnManager : MonoBehaviour
 
 	private GameObject[] _spawnPoints;
 	private bool _canSpawn = true;
+	private StateController _stateController;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
 		_spawnPoints = GameObject.FindGameObjectsWithTag("Spawn Point");
+		_stateController = GameObject.FindObjectOfType<StateController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+		if (_stateController.GetGameState() == StateController.GameState.Stopped) return;
+
 		if (_canSpawn)
 		{
 			StartCoroutine(SpawnEnemy());

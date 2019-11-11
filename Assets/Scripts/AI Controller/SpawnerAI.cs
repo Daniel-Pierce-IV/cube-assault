@@ -41,15 +41,20 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 	private bool _isInSpawnArea = false;
 	private bool _canSpawn = true;
 
+	private StateController _stateController;
+
 	void Start()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
 		_destinationPoint = GameObject.FindGameObjectWithTag("Spawn Area").transform.position;
 		_rigidbody.velocity = transform.forward * (awakenDistance / awakenDuration);
+		_stateController = GameObject.FindObjectOfType<StateController>();
 	}
 
 	void Update()
     {
+		if (_stateController.GetGameState() == StateController.GameState.Stopped) return;
+
 		if (_isFullyAwake)
 		{
 			// Always try to be in the spawn area
