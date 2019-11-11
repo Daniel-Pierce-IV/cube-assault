@@ -51,7 +51,7 @@ namespace PlayerController
 
 		private void CreateBullet()
 		{
-			GameObject bullet = Instantiate(
+			GameObject bulletInstance = Instantiate(
 				bulletPrefab,
 				spawnZone.transform.position,
 				spawnZone.transform.rotation);
@@ -59,15 +59,15 @@ namespace PlayerController
 			Vector3 spawnPoint = GetRandomLocalPointInZone();
 
 			// Move the bullet to a random point in the spawn zone
-			bullet.transform.Translate(spawnPoint);
+			bulletInstance.transform.Translate(spawnPoint);
 
 			// Rotate the bullet left/right depending on
 			// the distance it is from the center of the spawn zone
-			Vector3 bulletDir = bullet.transform.position - transform.position;
+			Vector3 bulletDir = bulletInstance.transform.position - transform.position;
 			float angle = Vector3.Angle(bulletDir, transform.forward) * bulletSpreadIntensity;
-			bullet.transform.Rotate(Vector3.up * Mathf.Sign(spawnPoint.x) * angle);
+			bulletInstance.transform.Rotate(Vector3.up * Mathf.Sign(spawnPoint.x) * angle);
 
-			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+			bulletInstance.GetComponent<Bullet>().SetSpeed(bulletSpeed);
 		}
 
 		private Vector3 GetRandomLocalPointInZone()
