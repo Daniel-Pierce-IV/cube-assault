@@ -15,7 +15,7 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
+public class SpawnerAI : MonoBehaviour, IDamageable
 {
 	[Tooltip("How far forward to move from the wall before moving to the spawn area.")]
 	[SerializeField] private float awakenDistance = 6f;
@@ -34,7 +34,6 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 
 	[SerializeField] private int initialWavesPerSpawn = 1;
 	[SerializeField] private int finalWavesPerSpawn = 3;
-	private int _currentWavesPerSpawn = 1;
 
 	[SerializeField] private GameObject enemyToSpawnPrefab;
 	[SerializeField] private Transform[] spawnPoints = new Transform[3];
@@ -46,7 +45,6 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 	private bool _canSpawn = true;
 
 	private StateController _stateController;
-	private Progression _progression;
 
 	void Start()
 	{
@@ -54,14 +52,11 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 		_destinationPoint = GameObject.FindGameObjectWithTag("Spawn Area").transform.position;
 		_rigidbody.velocity = transform.forward * (awakenDistance / awakenDuration);
 		_stateController = GameObject.FindObjectOfType<StateController>();
-		_progression = GameObject.FindObjectOfType<Progression>();
 	}
 
 	void Update()
     {
 		if (_stateController.GetGameState() == StateController.GameState.Stopped) return;
-
-		Progress();
 
 		if (_isFullyAwake)
 		{
@@ -76,7 +71,7 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 			// they get at least one wave out
 			if (_canSpawn)
 			{
-				StartCoroutine(SpawnBehavior(_currentWavesPerSpawn));
+				StartCoroutine(SpawnBehavior());
 			}
 		}
 	}
@@ -85,7 +80,11 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 	{
 		_canSpawn = false;
 
-		for (int i = 0; i < numberOfWaves; i++)
+		int _curWaves = Progression.Instance().CurrentValue(
+			initialWavesPerSpawn,
+			finalWavesPerSpawn);
+
+		for (int i = 0; i < _curWaves; i++)
 		{
 			CreateEnemies();
 
@@ -148,12 +147,5 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IProgressive
 	public void TakeDamage()
 	{
 		Destroy(gameObject);
-	}
-
-	public void Progress()
-	{
-		_currentWavesPerSpawn = _progression.CurrentValue(
-			initialWavesPerSpawn,
-			finalWavesPerSpawn);
 	}
 }

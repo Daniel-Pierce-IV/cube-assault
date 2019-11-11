@@ -47,6 +47,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Progression Tracker
       objectReference: {fileID: 0}
+    - target: {fileID: 8486562279176146695, guid: 1b32833007e2d5143b23fb09c5d80a04,
+        type: 3}
+      propertyPath: m_TagString
+      value: Progression
+      objectReference: {fileID: 0}
     - target: {fileID: 4955436360914539676, guid: 1b32833007e2d5143b23fb09c5d80a04,
         type: 3}
       propertyPath: m_LocalPosition.x

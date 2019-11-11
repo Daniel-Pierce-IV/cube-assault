@@ -20,4 +20,11 @@ public class Progression : MonoBehaviour
 		int toAdd = Mathf.RoundToInt(difference * Percent());
 		return initialValue + toAdd;
 	}
+
+	public static Progression Instance()
+	{
+		return GameObject
+			.FindGameObjectWithTag("Progression")
+			.GetComponent<Progression>();
+	}
 }
