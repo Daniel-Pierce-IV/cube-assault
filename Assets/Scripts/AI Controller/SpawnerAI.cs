@@ -15,7 +15,7 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpawnerAI : MonoBehaviour, IDamageable
+public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
 {
 	[Tooltip("How far forward to move from the wall before moving to the spawn area.")]
 	[SerializeField] private float awakenDistance = 6f;
@@ -40,17 +40,28 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 
 	private Rigidbody _rigidbody;
 	private Vector3 _destinationPoint;
-	private bool _isFullyAwake = false;
-	private bool _isInSpawnArea = false;
-	private bool _canSpawn = true;
+	private bool _isFullyAwake;
+	private bool _isInSpawnArea;
+	private float _nextSpawnTimestamp;
 
 	private StateController _stateController;
 
-	void Start()
+	private void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
-		_destinationPoint = GameObject.FindGameObjectWithTag("Spawn Area").transform.position;
+	}
+
+	private void OnEnable()
+	{
+		_isFullyAwake = false;
+		_isInSpawnArea = false;
+		_nextSpawnTimestamp = 0f;
 		_rigidbody.velocity = transform.forward * (awakenDistance / awakenDuration);
+	}
+
+	void Start()
+	{
+		_destinationPoint = GameObject.FindGameObjectWithTag("Spawn Area").transform.position;
 		_stateController = GameObject.FindObjectOfType<StateController>();
 	}
 
@@ -69,17 +80,15 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 			// NOTE: Spawners can spawn enemies outside of
 			// the spawn area, to prevent layers killing them before
 			// they get at least one wave out
-			if (_canSpawn)
+			if (Time.timeSinceLevelLoad > _nextSpawnTimestamp)
 			{
-				StartCoroutine(SpawnBehavior());
+				StartCoroutine(StartSpawning());
 			}
 		}
 	}
 
-	IEnumerator SpawnBehavior(int numberOfWaves = 1, float delayBetweenWaves = 0.5f)
+	IEnumerator StartSpawning(float delayBetweenWaves = 0.5f)
 	{
-		_canSpawn = false;
-
 		int _curWaves = Progression.Instance().CurrentValue(
 			initialWavesPerSpawn,
 			finalWavesPerSpawn);
@@ -88,15 +97,13 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 		{
 			CreateEnemies();
 
-			if (numberOfWaves > 1)
+			if (_curWaves > 1)
 			{
 				yield return new WaitForSeconds(delayBetweenWaves);
 			}
 		}
 
-		yield return new WaitForSeconds(RandomCooldownTime());
-
-		_canSpawn = true;
+		SetNextSpawnTimestamp();
 	}
 
 	private void CreateEnemies()
@@ -109,10 +116,10 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 				spawnPoint.rotation);
 		}
 	}
-
-	private float RandomCooldownTime()
+	private void SetNextSpawnTimestamp()
 	{
-		return UnityEngine.Random.Range(minSpawnCooldown, maxSpawnCooldown);
+		float cooldownTime = Random.Range(minSpawnCooldown, maxSpawnCooldown);
+		_nextSpawnTimestamp = Time.timeSinceLevelLoad + cooldownTime;
 	}
 
 	private void MoveToSpawnArea()
@@ -146,6 +153,16 @@ public class SpawnerAI : MonoBehaviour, IDamageable
 
 	public void TakeDamage()
 	{
-		Destroy(gameObject);
+		Deactivate();
+	}
+
+	public void Activate()
+	{
+		gameObject.SetActive(true);
+	}
+
+	public void Deactivate()
+	{
+		gameObject.SetActive(false);
 	}
 }

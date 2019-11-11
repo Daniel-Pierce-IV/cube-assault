@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 6053807806374455935}
   m_Layer: 9
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -342,6 +342,8 @@ MonoBehaviour:
   movementSpeed: 4
   minSpawnCooldown: 15
   maxSpawnCooldown: 25
+  initialWavesPerSpawn: 1
+  finalWavesPerSpawn: 3
   enemyToSpawnPrefab: {fileID: 4904344894709923602, guid: f596726607f4eb44dbe23a6c4d52d7e3,
     type: 3}
   spawnPoints:
