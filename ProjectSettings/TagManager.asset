@@ -11,6 +11,7 @@ TagManager:
   - Spawn Point
   - Progression
   - Spawner
+  - Seeker
   layers:
   - Default
   - TransparentFX

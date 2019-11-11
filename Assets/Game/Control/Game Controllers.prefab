@@ -186,17 +186,7 @@ PrefabInstance:
     - target: {fileID: 1809966028415297738, guid: 59657bcbd1367c745b413f116622a666,
         type: 3}
       propertyPath: _objectPools.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1809966028415297738, guid: 59657bcbd1367c745b413f116622a666,
-        type: 3}
-      propertyPath: _objectPools.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1809966028415297738, guid: 59657bcbd1367c745b413f116622a666,
-        type: 3}
-      propertyPath: _objectPools.Array.data[1]
-      value: 
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59657bcbd1367c745b413f116622a666, type: 3}

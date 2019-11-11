@@ -13,7 +13,7 @@ namespace AIController
 	 */
 
 	[RequireComponent(typeof(Rigidbody))]
-	public class SeekerAI : MonoBehaviour, IDamageable
+	public class SeekerAI : MonoBehaviour, IDamageable, IPoolable
 	{
 		[SerializeField] private float forwardSpeed = 10f;
 		[SerializeField] private float verticalSpeed = 3f;
@@ -36,10 +36,16 @@ namespace AIController
 
 		private Transform _target;
 		private Rigidbody _rigidbody;
-		private Vector3 _curVelocity;
-		private Vector3 _verticalDirection = Vector3.down;
-		private float _heightModifier = 0f;
-		private bool _isLingering = false;
+		private Vector3 _verticalDirection;
+		private float _heightModifier;
+		private bool _isLingering;
+
+		private void OnEnable()
+		{
+			_isLingering = false;
+			_heightModifier = 0f;
+			_verticalDirection = Vector3.down;
+		}
 
 		private void Start()
 		{
@@ -78,15 +84,15 @@ namespace AIController
 
 		private void UpdateRigidbodyVelocity()
 		{
-			_curVelocity = Vector3.zero;
-			_curVelocity += transform.forward * forwardSpeed;
+			Vector3 currentVelocity = Vector3.zero;
+			currentVelocity += transform.forward * forwardSpeed;
 
 			if (!_isLingering)
 			{
-				_curVelocity += verticalSpeed * _verticalDirection;
+				currentVelocity += verticalSpeed * _verticalDirection;
 			}
 
-			_rigidbody.velocity = _curVelocity;
+			_rigidbody.velocity = currentVelocity;
 		}
 
 		private void ReverseVerticalDirection()
@@ -164,7 +170,7 @@ namespace AIController
 
 		public void TakeDamage()
 		{
-			Destroy(gameObject);
+			Deactivate();
 		}
 
 		private void OnCollisionEnter(Collision collision)
@@ -174,6 +180,16 @@ namespace AIController
 			{
 				collision.gameObject.GetComponent<Health>().TakeDamage();
 			}
+		}
+
+		public void Activate()
+		{
+			gameObject.SetActive(true);
+		}
+
+		public void Deactivate()
+		{
+			gameObject.SetActive(false);
 		}
 	}
 }

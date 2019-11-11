@@ -110,10 +110,13 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
 	{
 		foreach (Transform spawnPoint in spawnPoints)
 		{
-			GameObject seeker = Instantiate(
-				enemyToSpawnPrefab,
-				spawnPoint.position,
-				spawnPoint.rotation);
+			GameObject seeker = ObjectPoolManager.instance
+				.GetObjectPoolByTag(enemyToSpawnPrefab.tag)
+				.GetOrCreate();
+
+			seeker.transform.position = spawnPoint.position;
+			seeker.transform.rotation = spawnPoint.rotation;
+			seeker.GetComponent<IPoolable>().Activate();
 		}
 	}
 	private void SetNextSpawnTimestamp()
