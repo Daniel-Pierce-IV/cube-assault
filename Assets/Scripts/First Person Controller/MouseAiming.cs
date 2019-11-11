@@ -18,6 +18,7 @@ namespace PlayerController
 		private void Start()
 		{
 			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
 		}
 
 		private void Update()
@@ -31,6 +32,7 @@ namespace PlayerController
 			else if(Cursor.lockState == CursorLockMode.Locked)
 			{
 				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
 			}
 		}
 
