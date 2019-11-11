@@ -5,7 +5,9 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
 	[SerializeField] private GameObject enemyPrefab;
-	[SerializeField] private float enemySpawnDelay = 5f;
+
+	[SerializeField] private float initialEnemySpawnDelay = 10f;
+	[SerializeField] private float finalEnemySpawnDelay = 5f;
 
 	private GameObject[] _spawnPoints;
 	private bool _canSpawn = true;
@@ -34,12 +36,16 @@ public class SpawnManager : MonoBehaviour
 		_canSpawn = false;
 
 		GameObject spawnPoint = GetRandomSpawnPoint();
+
 		Instantiate(
 			enemyPrefab,
 			spawnPoint.transform.position,
 			spawnPoint.transform.rotation);
 
-		yield return new WaitForSeconds(enemySpawnDelay);
+		yield return new WaitForSeconds(
+			Progression.Instance().CurrentValue(
+					initialEnemySpawnDelay,
+					finalEnemySpawnDelay));
 
 		_canSpawn = true;
 	}

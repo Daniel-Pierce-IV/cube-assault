@@ -3856,6 +3856,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3432480314115495131, guid: faa08997b61adc442aaf2f4bf8e0ae14,
+        type: 3}
+      propertyPath: initialFireRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432480314115495131, guid: faa08997b61adc442aaf2f4bf8e0ae14,
+        type: 3}
+      propertyPath: finalFireRate
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3808151652197526440, guid: faa08997b61adc442aaf2f4bf8e0ae14,
+        type: 3}
+      propertyPath: bulletSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3808151652197526440, guid: faa08997b61adc442aaf2f4bf8e0ae14,
+        type: 3}
+      propertyPath: initialBulletCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3808151652197526440, guid: faa08997b61adc442aaf2f4bf8e0ae14,
+        type: 3}
+      propertyPath: finalBulletCount
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faa08997b61adc442aaf2f4bf8e0ae14, type: 3}
 --- !u!4 &1259254162 stripped
