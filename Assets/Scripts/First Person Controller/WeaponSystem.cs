@@ -11,7 +11,6 @@ namespace PlayerController
 		[SerializeField] private KeyCode primaryKey = KeyCode.Mouse0;
 		[SerializeField] private KeyCode secondaryKey = KeyCode.Mouse1;
 
-		// Update is called once per frame
 		void Update()
 		{
 			if (!GetComponent<Health>().IsAlive()) return;
