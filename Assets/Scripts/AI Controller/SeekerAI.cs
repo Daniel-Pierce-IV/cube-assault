@@ -34,6 +34,8 @@ namespace AIController
 		[SerializeField] private AudioClip deathSoundClip;
 		[SerializeField] private float deathSoundVolume = 0.5f;
 
+		[SerializeField] private ParticleSystem deathVFX;
+
 		private const float FULL_ROTATION = 360f;
 		private const string TARGET_TAG = "Player";
 
@@ -56,7 +58,7 @@ namespace AIController
 			_meshRenderers = GetComponentsInChildren<MeshRenderer>();
 			_audioSource = GetComponent<AudioSource>();
 			_initialVolume = _audioSource.volume;
-			_deathDuration = Mathf.Max(0, deathSoundClip.length);
+			_deathDuration = Mathf.Max(deathVFX.main.startLifetime.constant, deathSoundClip.length);
 		}
 
 		private void Start()
@@ -237,7 +239,7 @@ namespace AIController
 		{
 			EnableCollidersAndMeshes(false);
 			_rigidbody.velocity = Vector3.zero;
-			// Play death VFX and SFX
+			deathVFX.Play();
 			AudioSource.PlayClipAtPoint(deathSoundClip, transform.position, deathSoundVolume);
 			StartCoroutine(DisableAfterDeath());
 		}
