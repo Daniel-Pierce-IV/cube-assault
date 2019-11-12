@@ -53,6 +53,8 @@ namespace PlayerController
 					InitializeBullet();
 				}
 
+				PlayFiringSound();
+
 				StartCoroutine(Cooldown());
 			}
 		}
@@ -103,6 +105,11 @@ namespace PlayerController
 					finalFireRate));
 
 			_isOnCooldown = false;
+		}
+
+		private void PlayFiringSound()
+		{
+			GetComponent<AudioSource>().Play();
 		}
 	}
 }
