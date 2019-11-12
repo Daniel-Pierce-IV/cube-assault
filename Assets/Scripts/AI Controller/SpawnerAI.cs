@@ -89,6 +89,10 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
 
 	IEnumerator StartSpawning(float delayBetweenWaves = 0.5f)
 	{
+		// Set next spawn time immediately, so that wave delays dont
+		// cause a glitchy enormous spawn scenario
+		SetNextSpawnTimestamp();
+
 		int _curWaves = Progression.Instance().CurrentValue(
 			initialWavesPerSpawn,
 			finalWavesPerSpawn);
@@ -103,7 +107,6 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
 			}
 		}
 
-		SetNextSpawnTimestamp();
 	}
 
 	private void CreateEnemies()
