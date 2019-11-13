@@ -23,6 +23,12 @@ namespace PlayerController
 
 		private bool _isFiring = false;
 		private bool _isOnCooldown = false;
+		private AudioSource _audioSource;
+
+		private void Awake()
+		{
+			_audioSource = GetComponent<AudioSource>();
+		}
 
 		public void Activate()
 		{
@@ -109,7 +115,7 @@ namespace PlayerController
 
 		private void PlayFiringSound()
 		{
-			GetComponent<AudioSource>().Play();
+			_audioSource.Play();
 		}
 	}
 }
