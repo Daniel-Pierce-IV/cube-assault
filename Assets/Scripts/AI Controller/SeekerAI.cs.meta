@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/AI Controller/SeekerAI.cs.meta
+guid: 4e3782dbd96be7344b57368bb3162307
+=======
+guid: 7ad63af9a965ce2468bfe0d47bd840af
+>>>>>>> 6a06585af5b9768f378f33fee2337f9a7e68e71a:Assets/Scripts/Game Control/PhysicsSimulationUpdater.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
