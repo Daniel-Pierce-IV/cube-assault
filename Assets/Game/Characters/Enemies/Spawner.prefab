@@ -253,7 +253,7 @@ MonoBehaviour:
   - {fileID: 4474390891757095003}
   - {fileID: 8031927150552561404}
   deathSoundClip: {fileID: 8300000, guid: d420b2a44cc55784f96a44804fd94e02, type: 3}
-  deathSoundVolume: 0.5
+  deathSoundVolume: 0.7
   deathVFX: {fileID: 7475485601092660906}
 --- !u!82 &-5515637230023207201
 AudioSource:

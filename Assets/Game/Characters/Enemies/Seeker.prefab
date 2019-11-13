@@ -74,7 +74,7 @@ MonoBehaviour:
   minLingerTime: 1
   maxLingerTime: 3
   deathSoundClip: {fileID: 8300000, guid: 6874276d0a72c324aa8635844a042cba, type: 3}
-  deathSoundVolume: 0.5
+  deathSoundVolume: 0.7
   deathVFX: {fileID: 2411936655276158948}
 --- !u!82 &-1023830474875257730
 AudioSource:
