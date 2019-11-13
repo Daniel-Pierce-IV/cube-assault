@@ -38,17 +38,33 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
 	[SerializeField] private GameObject enemyToSpawnPrefab;
 	[SerializeField] private Transform[] spawnPoints = new Transform[3];
 
+	[SerializeField] private AudioClip deathSoundClip;
+	[SerializeField] private float deathSoundVolume = 0.5f;
+
+	[SerializeField] private ParticleSystem deathVFX;
+
 	private Rigidbody _rigidbody;
+	private Collider[] _colliders;
+	private MeshRenderer[] _meshRenderers;
+	private AudioSource _audioSource;
 	private Vector3 _destinationPoint;
 	private bool _isFullyAwake;
 	private bool _isInSpawnArea;
 	private float _nextSpawnTimestamp;
+	private float _initialVolume;
+	private float _deathEndingTimestamp;
+	private float _deathDuration;
 
 	private StateController _stateController;
 
 	private void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
+		_colliders = GetComponentsInChildren<Collider>();
+		_meshRenderers = GetComponentsInChildren<MeshRenderer>();
+		_audioSource = GetComponent<AudioSource>();
+		_initialVolume = _audioSource.volume;
+		_deathDuration = Mathf.Max(deathVFX.main.startLifetime.constant, deathSoundClip.length);
 	}
 
 	private void OnEnable()
@@ -69,7 +85,12 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
     {
 		if (_stateController.GetGameState() == StateController.GameState.Stopped) return;
 
-		if (_isFullyAwake)
+		if (Time.timeSinceLevelLoad < _deathEndingTimestamp)
+		{
+			// Slowly turn down volume to avoid "popping"
+			_audioSource.volume -= Time.deltaTime * _deathDuration;
+		}
+		else if (_isFullyAwake)
 		{
 			// Always try to be in the spawn area
 			if (!_isInSpawnArea)
@@ -162,13 +183,40 @@ public class SpawnerAI : MonoBehaviour, IDamageable, IPoolable
 		Deactivate();
 	}
 
+	private void EnableCollidersAndMeshes(bool value)
+	{
+		foreach (Collider collider in _colliders)
+		{
+			collider.enabled = value;
+		}
+
+		foreach (MeshRenderer meshRenderer in _meshRenderers)
+		{
+			meshRenderer.enabled = value;
+		}
+	}
+
 	public void Activate()
 	{
+		_audioSource.volume = _initialVolume;
+		_deathEndingTimestamp = 0f;
+		EnableCollidersAndMeshes(true);
 		gameObject.SetActive(true);
 	}
 
 	public void Deactivate()
 	{
+		EnableCollidersAndMeshes(false);
+		_rigidbody.velocity = Vector3.zero;
+		deathVFX.Play();
+		AudioSource.PlayClipAtPoint(deathSoundClip, transform.position, deathSoundVolume);
+		StartCoroutine(DisableAfterDeath());
+	}
+
+	IEnumerator DisableAfterDeath()
+	{
+		_deathEndingTimestamp = Time.timeSinceLevelLoad + _deathDuration;
+		yield return new WaitForSeconds(_deathDuration);
 		gameObject.SetActive(false);
 	}
 }

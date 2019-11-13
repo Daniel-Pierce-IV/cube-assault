@@ -31,43 +31,72 @@ namespace AIController
 		//[Tooltip("Maximum time to hover at target height.")]
 		[SerializeField] private float maxLingerTime = 3f;
 
+		[SerializeField] private AudioClip deathSoundClip;
+		[SerializeField] private float deathSoundVolume = 0.5f;
+
+		[SerializeField] private ParticleSystem deathVFX;
+
 		private const float FULL_ROTATION = 360f;
 		private const string TARGET_TAG = "Player";
 
 		private Transform _target;
 		private Rigidbody _rigidbody;
+		private Collider[] _colliders;
+		private MeshRenderer[] _meshRenderers;
+		private AudioSource _audioSource;
 		private Vector3 _verticalDirection;
 		private float _heightModifier;
 		private bool _isLingering;
+		private float _initialVolume;
+		private float _deathEndingTimestamp;
+		private float _deathDuration;
 
-		private void OnEnable()
+		private void Awake()
 		{
-			_isLingering = false;
-			_heightModifier = 0f;
-			_verticalDirection = Vector3.down;
+			_rigidbody = GetComponent<Rigidbody>();
+			_colliders = GetComponentsInChildren<Collider>();
+			_meshRenderers = GetComponentsInChildren<MeshRenderer>();
+			_audioSource = GetComponent<AudioSource>();
+			_initialVolume = _audioSource.volume;
+			_deathDuration = Mathf.Max(deathVFX.main.startLifetime.constant, deathSoundClip.length);
 		}
 
 		private void Start()
 		{
 			_target = GameObject.FindGameObjectWithTag(TARGET_TAG).transform;
-			_rigidbody = GetComponent<Rigidbody>();
+
+			// TODO: Set death duration as longest length between VFX or SFX time
 		}
 
 		void Update()
 		{
-			if (!_isLingering)
+			if (IsDying())
 			{
-				if (TargetHeightReached())
-				{
-					StartCoroutine(LingerAtCurrentHeight());
-					ReverseVerticalDirection();
-					UpdateHeightModifier();
-				}
+				// Slowly turn down volume to avoid "popping"
+				_audioSource.volume -= Time.deltaTime * _deathDuration;
 			}
+			else
+			{
+				if (!_isLingering)
+				{
+					if (TargetHeightReached())
+					{
+						StartCoroutine(LingerAtCurrentHeight());
+						ReverseVerticalDirection();
+						UpdateHeightModifier();
+					}
+				}
 
-			// NOTE: Velocity depends on Rotation, so Rotation must come first
-			UpdateRigidbodyRotation();
-			UpdateRigidbodyVelocity();
+				// NOTE: Velocity depends on Rotation, so Rotation must come first
+				UpdateRigidbodyRotation();
+				UpdateRigidbodyVelocity();
+			}
+		}
+
+		private bool IsDying()
+		{
+			
+			return Time.timeSinceLevelLoad < _deathEndingTimestamp;
 		}
 
 		private void UpdateRigidbodyRotation()
@@ -182,13 +211,43 @@ namespace AIController
 			}
 		}
 
+		private void EnableCollidersAndMeshes(bool value)
+		{
+			foreach (Collider collider in _colliders)
+			{
+				collider.enabled = value;
+			}
+
+			foreach (MeshRenderer meshRenderer in _meshRenderers)
+			{
+				meshRenderer.enabled = value;
+			}
+		}
+
 		public void Activate()
 		{
+			_isLingering = false;
+			_heightModifier = 0f;
+			_verticalDirection = Vector3.down;
+			_audioSource.volume = _initialVolume;
+			_deathEndingTimestamp = 0f;
+			EnableCollidersAndMeshes(true);
 			gameObject.SetActive(true);
 		}
 
 		public void Deactivate()
 		{
+			EnableCollidersAndMeshes(false);
+			_rigidbody.velocity = Vector3.zero;
+			deathVFX.Play();
+			AudioSource.PlayClipAtPoint(deathSoundClip, transform.position, deathSoundVolume);
+			StartCoroutine(DisableAfterDeath());
+		}
+
+		IEnumerator DisableAfterDeath()
+		{
+			_deathEndingTimestamp = Time.timeSinceLevelLoad + _deathDuration;
+			yield return new WaitForSeconds(_deathDuration);
 			gameObject.SetActive(false);
 		}
 	}
