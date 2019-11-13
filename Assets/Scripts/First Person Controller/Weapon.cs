@@ -23,11 +23,15 @@ namespace PlayerController
 
 		private bool _isFiring = false;
 		private bool _isOnCooldown = false;
+
 		private AudioSource _audioSource;
+		private float _initialVolume;
+
 
 		private void Awake()
 		{
 			_audioSource = GetComponent<AudioSource>();
+			_initialVolume = _audioSource.volume;
 		}
 
 		public void Activate()
@@ -39,6 +43,7 @@ namespace PlayerController
 		public void Deactivate()
 		{
 			_isFiring = false;
+			StartCoroutine(SoundFalloff());
 		}
 
 		public bool IsActive()
@@ -115,7 +120,27 @@ namespace PlayerController
 
 		private void PlayFiringSound()
 		{
+			if (_audioSource.loop && _audioSource.isPlaying)
+			{
+				return;
+			}
+
+			_audioSource.volume = _initialVolume;
 			_audioSource.Play();
+		}
+
+		IEnumerator SoundFalloff()
+		{
+			while (_audioSource.volume > 0f && !_isFiring)
+			{
+				_audioSource.volume -= Time.deltaTime;
+				yield return new WaitForSeconds(Time.deltaTime);
+			}
+
+			if (Mathf.Approximately(_audioSource.volume, 0f))
+			{
+				_audioSource.Stop();
+			}
 		}
 	}
 }
