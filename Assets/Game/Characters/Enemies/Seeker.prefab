@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 12
-  verticalSpeed: 4
+  verticalSpeed: 8
   rotationTime: 6
   minAscent: 0
   maxAscent: 3
