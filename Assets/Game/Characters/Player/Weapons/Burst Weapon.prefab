@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialFireRate: 0.5
   finalFireRate: 0.5
-  bulletSpeed: 30
-  initialBulletCount: 10
-  finalBulletCount: 50
+  bulletSpeed: 40
+  initialBulletCount: 25
+  finalBulletCount: 75
   bulletSpreadIntensity: 0.25
   bulletPrefab: {fileID: 5474115884729982807, guid: 4319fca250a23434ca1567b8ed213839,
     type: 3}

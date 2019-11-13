@@ -91,14 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialFireRate: 0.1
   finalFireRate: 0.01
-  bulletSpeed: 50
+  bulletSpeed: 60
   initialBulletCount: 1
   finalBulletCount: 1
   bulletSpreadIntensity: 0
   bulletPrefab: {fileID: 5474115884729982807, guid: 4319fca250a23434ca1567b8ed213839,
     type: 3}
   spawnZone: {fileID: 743988251703778853}
-  firingSoundLoops: 1
 --- !u!82 &2493903865035754341
 AudioSource:
   m_ObjectHideFlags: 0
